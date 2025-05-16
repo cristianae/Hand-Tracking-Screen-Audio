@@ -1,9 +1,9 @@
-import cv2 
-import mediapipe 
+import cv2 #for webcam video capture
+import mediapipe #real time hand tracking
 
-handSolution = mediapipe.solutions.hands #importing mediapipe library
+handSolution = mediapipe.solutions.hands #hand detection
 hand = handSolution.Hands() #creating an object of hands class
-videoCap= cv2.VideoCapture(0) #0 is the default camera
+videoCap= cv2.VideoCapture(0) #0 is the default camera, opens the webcam
 quitapplication = False
 
 if not videoCap.isOpened():
@@ -37,8 +37,8 @@ while True:
     cv2.putText(img, 'QUIT', (25, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
 
     cv2.imshow("My Camera", img) #showing the camera feed
-    cv2.waitKey(1)
-    if quitapplication: #wait for 1ms
+    cv2.waitKey(1) #1 millisecond delay, for real time processing
+    if quitapplication: 
         break
        
 
