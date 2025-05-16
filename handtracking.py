@@ -35,7 +35,6 @@ while True:
         break
     movement = hand.process(img) #process the image
     
-
     if movement.multi_hand_landmarks and movement.multi_handedness: 
         for i, handLandmarks in enumerate(movement.multi_hand_landmarks):
             label = movement.multi_handedness[i].classification[0].label  #"Left" or "Right"
@@ -62,8 +61,8 @@ while True:
             if label == "Left": #if left hand is detected
                 volume = np.clip((distance - min) / (max - min) * 100, 0, 100)
                 #change volume on mac os
-                call(["osascript", "-e", "set volume output volume {}".format(int(volume))])    
-                cv2.putText(img, f'Volume: {int(volume)}%', (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                call(["osascript", "-e", "set volume output volume {}".format(int(volume))]) 
+                
             
             elif label == "Right": #if right hand is detected
                 brightness = np.clip((distance - min) / (max - min), 0, 1.0)
@@ -72,15 +71,16 @@ while True:
 
                 cv2.rectangle(copydisplay, (0, 0), (img.shape[1], img.shape[0]), (0, 0, 0), -1)
                 cv2.addWeighted(copydisplay, alpha, img, 1 - alpha, 0, img)
-                cv2.putText(img, f'Brightness: {int(brightness * 100)}%', (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-
-
+            
+            cv2.putText(img, f'Volume: {int(volume)}%', (15, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            cv2.putText(img, f'Brightness: {int(brightness * 100)}%', (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
         
     cv2.rectangle(img, (10, 10), (110, 50), (0, 0, 255), -1)
     cv2.putText(img, 'QUIT', (25, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
 
     cv2.imshow("My Camera", img) #showing the camera feed
     cv2.waitKey(1) #1 millisecond delay, for real time processing
+
     if quitapplication: 
         break
        
